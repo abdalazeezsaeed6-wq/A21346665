@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خدماتي - المنصة المتكاملة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <style>
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee { display: inline-block; animation: marquee 20s linear infinite; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
+
+    <!-- الشريط المتحرك العلوي للإعلانات -->
+    <div class="bg-amber-500 text-slate-950 font-bold py-2 overflow-hidden whitespace-nowrap shadow-md text-xs sm:text-sm">
+        <div class="animate-marquee px-4">
+            📢 أهلاً بكم في منصة خدماتي للخدمات الإلكترونية والتسديد والتحويلات. الخدمة متوفرة على مدار الساعة!
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي (يتغير حسب الصفحة النشطة) -->
+    <main class="max-w-md w-full mx-auto p-4 flex-grow flex flex-col justify-center">
+
+        <!-- ================= 1. واجهة تسجيل الدخول ================= -->
+        <div id="view-login" class="space-y-4">
+            <div class="text-center mb-6">
+                <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+                    خدماتي
+                </h1>
+                <p class="text-slate-400 text-xs mt-1">بوابتك الذكية للتسديد والخدمات الإلكترونية</p>
+            </div>
+
+            <div class="bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700">
+                <form onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">رمز المستخدم / رقم الجوال</label>
+                        <input type="text" id="login-phone" required placeholder="أدخل رقم الجوال" 
+                            class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">كلمة المرور</label>
+                        <input type="password" id="login-pass" required placeholder="••••••••" 
+                            class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 text-sm">
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-lg shadow-lg text-sm">
+                        تسجيل الدخول
+                    </button>
+                </form>
+                <div class="mt-4 text-center space-y-2 text-xs">
+                    <button onclick="switchView('register')" class="text-cyan-400 hover:underline block w-full">إنشاء حساب جديد (عميل / وكيل)</button>
+                    <button onclick="switchView('dashboard')" class="text-slate-400 hover:underline block w-full">الدخول كزائر</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 2. واجهة إنشاء حساب جديد ================= -->
+        <div id="view-register" class="space-y-4 hidden">
+            <div class="text-center mb-4">
+                <h1 class="text-xl font-bold text-cyan-400">إنشاء حساب جديد</h1>
+                <p class="text-slate-400 text-xs">قم بتعبئة بياناتك لتصلك كلمة المرور عبر التليجرام</p>
+            </div>
+
+            <div class="bg-slate-800 p-5 rounded-2xl shadow-xl border border-slate-700 space-y-3">
+                <div class="flex gap-2 mb-2">
+                    <button type="button" onclick="setRegType('customer')" id="r-cust" class="flex-1 py-2 rounded-lg font-bold text-xs bg-cyan-600 text-white">عميل</button>
+                    <button type="button" onclick="setRegType('agent')" id="r-agent" class="flex-1 py-2 rounded-lg font-bold text-xs bg-slate-700 text-slate-300">وكيل</button>
+                </div>
+
+                <input type="hidden" id="reg-role" value="customer">
+
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1">الاسم الكامل</label>
+                    <input type="text" id="reg-name" required placeholder="الاسم الكامل" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1">رقم الجوال</label>
+                    <input type="tel" id="reg-phone" required placeholder="77xxxxxxx" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1">اسم المدينة</label>
+                    <select id="reg-city" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white">
+                        <option value="سيئون">سيئون (وادي حضرموت)</option>
+                        <option value="المكلا">المكلا</option>
+                        <option value="تريم">تريم</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1">اسم المحل والموقع</label>
+                    <input type="text" id="reg-store" required placeholder="اسم المحل والشارع" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white">
+                </div>
+
+                <button onclick="submitRegisterData()" id="reg-btn" class="w-full py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-lg text-xs mt-2">
+                    تأكيد التسجيل وإرسال الطلب
+                </button>
+
+                <div class="text-center pt-2">
+                    <button onclick="switchView('login')" class="text-xs text-slate-400 hover:text-cyan-400">← العودة لتسجيل الدخول</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 3. واجهة لوحة الخدمات الرئيسية ================= -->
+        <div id="view-dashboard" class="space-y-3 hidden">
+            <div class="flex items-center justify-between bg-slate-800 p-2.5 rounded-xl border border-slate-700">
+                <span class="text-xs text-cyan-300 font-bold">👤 خدماتي (نشط)</span>
+                <button onclick="switchView('login')" class="text-xs text-rose-400 bg-rose-500/10 px-2.5 py-1 rounded-lg">خروج</button>
+            </div>
+
+            <!-- مستطيل الرصيد -->
+            <div class="bg-gradient-to-r from-cyan-900 to-blue-900 border border-cyan-700 p-3.5 rounded-xl flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-cyan-300">مرحباً بك</p>
+                    <h2 class="text-lg font-black text-white">الرصيد: <span class="text-amber-400">150,400</span> ر.ي</h2>
+                </div>
+                <span class="text-xl">💳</span>
+            </div>
+
+            <!-- شبكة الخدمات -->
+            <div class="grid grid-cols-2 gap-2.5">
+                <button onclick="alert('خدمة كبينة التسديد موقوفة حالياً.')" class="bg-slate-800 border border-slate-700 p-3 rounded-xl text-center flex flex-col items-center gap-1 opacity-75">
+                    <span class="text-xl">🛑</span>
+                    <span class="text-xs font-bold text-slate-300">كبينة التسديد</span>
+                </button>
+                <button onclick="alert('فتح تسديد الكهرباء والماء')" class="bg-slate-800 border border-slate-700 p-3 rounded-xl text-center flex flex-col items-center gap-1">
+                    <span class="text-xl">⚡💧</span>
+                    <span class="text-xs font-bold text-cyan-400">كهرباء أو ماء</span>
+                </button>
+                <button onclick="alert('فتح كروت الواي فاي')" class="bg-slate-800 border border-slate-700 p-3 rounded-xl text-center flex flex-col items-center gap-1">
+                    <span class="text-xl">📶</span>
+                    <span class="text-xs font-bold text-cyan-400">كروت الواي فاي</span>
+                </button>
+                <button onclick="alert('فتح قنوات التلفاز')" class="bg-slate-800 border border-slate-700 p-3 rounded-xl text-center flex flex-col items-center gap-1">
+                    <span class="text-xl">📺</span>
+                    <span class="text-xs font-bold text-cyan-400">قنوات التلفاز</span>
+                </button>
+                <button onclick="alert('فتح الحوالات المالية')" class="bg-slate-800 border border-slate-700 p-3 rounded-xl text-center flex flex-col items-center gap-1">
+                    <span class="text-xl">💸</span>
+                    <span class="text-xs font-bold text-cyan-400">الحوالات المالية</span>
+                </button>
+                <button onclick="alert('عرض بيانات الإيداع البنكي')" class="bg-slate-800 border border-slate-700 p-3 rounded-xl text-center flex flex-col items-center gap-1">
+                    <span class="text-xl">💰</span>
+                    <span class="text-xs font-bold text-cyan-400">تعبئة حسابي</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- أزرار الاتصال والواتساب السريعة في أركان الشاشة -->
+    <div class="fixed bottom-4 right-4 z-50">
+        <a href="https://wa.me/967773191473" target="_blank" class="bg-emerald-600 text-white p-3 rounded-full shadow-lg flex items-center justify-center">
+            💬
+        </a>
+    </div>
+    <div class="fixed bottom-4 left-4 z-50">
+        <a href="tel:+967773191473" class="bg-blue-600 text-white p-3 rounded-full shadow-lg flex items-center justify-center">
+            📞
+        </a>
+    </div>
+
+    <!-- برمجة التنقل وإرسال البيانات للرابط السحابي -->
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQsiJUXpgs8lO3oUN8jXotS5H-huFqtyWySUOZL0Aa-RhBs_GXftzM0DtQhOlfJAdhQg/exec";
+
+        function switchView(viewName) {
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-register').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.add('hidden');
+
+            if(viewName === 'login') document.getElementById('view-login').classList.remove('hidden');
+            if(viewName === 'register') document.getElementById('view-register').classList.remove('hidden');
+            if(viewName === 'dashboard') document.getElementById('view-dashboard').classList.remove('hidden');
+        }
+
+        function setRegType(type) {
+            document.getElementById('reg-role').value = type;
+            if(type === 'customer') {
+                document.getElementById('r-cust').className = "flex-1 py-2 rounded-lg font-bold text-xs bg-cyan-600 text-white";
+                document.getElementById('r-agent').className = "flex-1 py-2 rounded-lg font-bold text-xs bg-slate-700 text-slate-300";
+            } else {
+                document.getElementById('r-agent').className = "flex-1 py-2 rounded-lg font-bold text-xs bg-cyan-600 text-white";
+                document.getElementById('r-cust').className = "flex-1 py-2 rounded-lg font-bold text-xs bg-slate-700 text-slate-300";
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            // الانتقال للوحة الخدمات مباشرة عند تسجيل الدخول
+            switchView('dashboard');
+        }
+
+        function submitRegisterData() {
+            const btn = document.getElementById('reg-btn');
+            const data = {
+                action: "register",
+                role: document.getElementById('reg-role').value,
+                full_name: document.getElementById('reg-name').value,
+                phone: document.getElementById('reg-phone').value,
+                city: document.getElementById('reg-city').value,
+                store_info: document.getElementById('reg-store').value
+            };
+
+            if(!data.full_name || !data.phone || !data.store_info) {
+                alert('يرجى تعبئة جميع الحقول المطلوبة!');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "جاري الإرسال...";
+
+            fetch(SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                alert('تم إرسال طلب التسجيل بنجاح! سيتم إرسال كلمة المرور عبر التليجرام.');
+                btn.disabled = false;
+                btn.innerText = "تأكيد التسجيل وإرسال الطلب";
+                switchView('login');
+            })
+            .catch(err => {
+                alert('حدث خطأ: ' + err);
+                btn.disabled.checked = false;
+                btn.innerText = "تأكيد التسجيل وإرسال الطلب";
+            });
+        }
+    </script>
+</body>
+</html>
